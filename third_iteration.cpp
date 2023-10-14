@@ -13,7 +13,7 @@ int main(void)
     FILE* fileOnegin = fopen("file.txt", "r");
     printf("red\n");
     size_t nLines=count_lines("file.txt");
-    char** arrPointer=(char**)calloc(nLines, sizeof(char*));
+    char* arrPointer=(char*)calloc(nLines, sizeof(char*));
     char buffer[buffer_length]={};
     //printf("%d\n", strlen(buffer[1]));
     printf("go to cycle\n");
