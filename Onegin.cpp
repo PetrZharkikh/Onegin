@@ -92,13 +92,7 @@ size_t count_lines(char* Arr)
     return cnt;
     }
 
-//int str_cmp(const void* lhs, const void* rhs)
-//{
-  //  return strcmp();
-//}
 
-
-//void bsort(char* arr[], size_t size, int (*cmp)(const void*, const void*))
 void bsort(char* arr[], size_t sizeofarr, size_t sizeoftype, int (*cmp)(const void*, const void*))
     {
      for (int unsigned pass = 0; pass < sizeofarr - 1; pass++)
@@ -109,7 +103,7 @@ void bsort(char* arr[], size_t sizeofarr, size_t sizeoftype, int (*cmp)(const vo
              if (cmp(arr[i], arr[i + 1]) > 0)
                 {
                  scr++;
-                 swap(&arr[i], &arr[i+1], sizeoftype);       //!!!!!!!
+                 swap(&arr[i], &arr[i+1], sizeoftype);
                 }
             }
          if (scr == 0) break;
@@ -136,17 +130,10 @@ void bsort_reversed(char* arr[], size_t sizeofarr, size_t sizeoftype, int (*r_cm
 
 int mystrcmp(const void* ptr1, const void* ptr2)
     {
-    int pos = 0;
-
     const char* str1 = (const char*)ptr1;
     const char* str2 = (const char*)ptr2;
 
-    while (str1[pos] != 0 && str2[pos] != 0 &&  str1[pos] == str2[pos])
-        {
-        pos++;
-        }
-
-    return (str1[pos]) - (str2[pos]);
+    return strcmp(str1, str2);
     }
 
 int strcmp_reversed(const void* ptr1, const void* ptr2)
@@ -182,11 +169,10 @@ size_t sizeof_file(FILE * fileName)
 void swap(void* ptr1, void* ptr2, size_t sizeofelem)
     {
     void* temp = (void*)malloc(sizeofelem);
+
     memcpy(temp, ptr1, sizeofelem);
-    //printf("%s\n", temp);
     memcpy(ptr1, ptr2, sizeofelem);
-    //printf("%s\n", ptr1);
     memcpy(ptr2, temp, sizeofelem);
-    //printf("%s\n", ptr2);
+
     free(temp);
     }
