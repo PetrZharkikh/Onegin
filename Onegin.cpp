@@ -5,10 +5,10 @@
 
 size_t count_lines(char* Arr);
 void bsort(char* arr[], size_t sizeofarr, size_t sizeoftype, int (*cmp)(const void*, const void*));
-int strcmp_reversed(char arr1[], char arr2[]);
-void bsort_reversed(char* arr[], size_t size);
+int strcmp_reversed(const void* ptr1, const void* ptr2);
+void bsort_reversed(char* arr[], size_t sizeofarr, size_t sizeoftype, int (*cmp)(const void*, const void*));
 size_t sizeof_file(FILE * fileName);
-void swap(void* ptr1, void* ptr2, size_t size, size_t sizeofelem);
+void swap(void* ptr1, void* ptr2, size_t sizeofelem);
 int mystrcmp(const void* ptr1, const void* ptr2);
 
 
@@ -46,6 +46,16 @@ int main(void)
         }
 
     bsort(arrPointer, nLines, sizeof(char*), mystrcmp);
+
+    for (int unsigned j = 0; j < nLines; j++)
+        {
+        printf("%s", arrPointer[j]);
+        putchar('\n');
+        }
+
+    putchar('\n');
+
+    bsort_reversed(arrPointer, nLines, sizeof(char*), strcmp_reversed);
 
     for (int unsigned j = 0; j < nLines; j++)
         {
@@ -99,7 +109,7 @@ void bsort(char* arr[], size_t sizeofarr, size_t sizeoftype, int (*cmp)(const vo
              if (cmp(arr[i], arr[i + 1]) > 0)
                 {
                  scr++;
-                 swap(arr[i], arr[i+1], 8 , sizeoftype);       //!!!!!!!
+                 swap(&arr[i], &arr[i+1], sizeoftype);       //!!!!!!!
                 }
             }
          if (scr == 0) break;
@@ -107,19 +117,17 @@ void bsort(char* arr[], size_t sizeofarr, size_t sizeoftype, int (*cmp)(const vo
     }
 
 
-void bsort_reversed(char* arr[], size_t size)
+void bsort_reversed(char* arr[], size_t sizeofarr, size_t sizeoftype, int (*r_cmp)(const void*, const void*))
     {
-    for (int unsigned pass = 0; pass < size-1; pass++)
+    for (int unsigned pass = 0; pass < sizeofarr - 1; pass++)
         {
          int scr = 0;
-         for (int unsigned i = 0; i < size -1 -pass; i++)
+         for (int unsigned i = 0; i < sizeofarr -1 - pass; i++)
             {
-             if (strcmp_reversed(arr[i],arr[i+1])>0)
+             if (r_cmp(arr[i],arr[i+1])>0)
                 {
                  scr++;
-                 char* temp = arr[i];
-                 arr[i] =   arr[i+1];
-                 arr[i+1] = temp;
+                 swap(&arr[i], &arr[i+1], sizeoftype);
                 }
             }
          if (scr == 0) break;
@@ -141,8 +149,11 @@ int mystrcmp(const void* ptr1, const void* ptr2)
     return (str1[pos]) - (str2[pos]);
     }
 
-int strcmp_reversed(char s1[], char s2[])
+int strcmp_reversed(const void* ptr1, const void* ptr2)
     {
+    const char* s1 = (const char*)ptr1;
+    const char* s2 = (const char*)ptr2;
+
     int pos1 = strlen(s1);
     int pos2 = strlen(s2);
 
@@ -168,14 +179,14 @@ size_t sizeof_file(FILE * fileName)
 }
 
 
-void swap(void* ptr1, void* ptr2, size_t size, size_t sizeofelem)
+void swap(void* ptr1, void* ptr2, size_t sizeofelem)
     {
-    void* temp = (void*)calloc(size, sizeofelem);
-    memcpy(temp, ptr1, size);
+    void* temp = (void*)malloc(sizeofelem);
+    memcpy(temp, ptr1, sizeofelem);
     //printf("%s\n", temp);
-    memcpy(ptr1, ptr2, size);
+    memcpy(ptr1, ptr2, sizeofelem);
     //printf("%s\n", ptr1);
-    memcpy(ptr2, temp, size);
+    memcpy(ptr2, temp, sizeofelem);
     //printf("%s\n", ptr2);
     free(temp);
     }
