@@ -63,6 +63,9 @@ int main(void)
         putchar('\n');
         }
 
+    free(arrPointer);
+    free(big_buffer);
+
     return 0;
     }
 
